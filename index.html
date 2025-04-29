@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Cyberpunk VS Code Login Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 3D Grid Background */
+        .background-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1e1e2f 0%, #0a0a1a 70%);
+            z-index: -3;
+            perspective: 1000px;
+        }
+
+        .grid-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(80, 163, 162, 0.1) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(80, 163, 162, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridPulse 20s infinite linear;
+            transform: rotateX(60deg) translateZ(-200px);
+        }
+
+        @keyframes gridPulse {
+            0% { background-position: 0 0; opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { background-position: 80px 80px; opacity: 0.5; }
+        }
+
+        /* Wave Overlay */
+        .wave-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #50a3a2, #88d8d7, #1e1e2f, #0a0a1a);
+            background-size: 400%;
+            animation: waveFlow 12s ease-in-out infinite;
+            z-index: -2;
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes waveFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Reactive Particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(80, 163, 162, 0.9), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(80, 163, 162, 0.7);
+            animation: float 10s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.3); opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) scale(0.6); opacity: 0.3; }
+        }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(20, 20, 40, 0.75);
+            backdrop-filter: blur(20px);
+            padding: 70px;
+            border-radius: 25px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(80, 163, 162, 0.4);
+            width: 500px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: containerFade 1.5s ease-in;
+            transform: perspective(1200px);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        @keyframes containerFade {
+            from { opacity: 0; transform: translateY(50px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .login-container:hover {
+            box-shadow: 0 0 70px rgba(80, 163, 162, 0.9);
+        }
+
+        .login-container h2 {
+            color: #ffffff;
+            margin-bottom: 60px;
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(80, 163, 162, 1);
+            animation: neonGlow 2s infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from { text-shadow: 0 0 15px rgba(80, 163, 162, 0.7); }
+            to { text-shadow: 0 0 30px rgba(80, 163, 162, 1); }
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 45px;
+            perspective: 500px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(30, 30, 47, 0.95);
+            border: none;
+            outline: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 20px;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 15px rgba(80, 163, 162, 0.5);
+            transform: rotateY(0);
+        }
+
+        .input-group input:focus {
+            box-shadow: 0 0 25px rgba(80, 163, 162, 0.9);
+            transform: scale(1.04) rotateY(5deg);
+            background: rgba(50, 50, 70, 0.95);
+        }
+
+        .input-group input:valid {
+            box-shadow: 0 0 20px rgba(80, 163, 162, 0.7);
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            color: #bbb;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            font-size: 20px;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+            animation: labelVibrate 5s infinite;
+        }
+
+        @keyframes labelVibrate {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(1px); }
+        }
+
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label {
+            top: -14px;
+            font-size: 16px;
+            color: #50a3a2;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 0 10px;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(80, 163, 162, 0.6);
+            animation: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #50a3a2, #88d8d7, #50a3a2);
+            background-size: 300%;
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 22px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px rgba(80, 163, 162, 0.7);
+            animation: btnPulse 4s infinite;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 0 35px rgba(80, 163, 162, 1);
+            background-position: 100%;
+        }
+
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 20px rgba(80, 163, 162, 0.7); }
+            50% { box-shadow: 0 0 40px rgba(80, 163, 162, 1); }
+            100% { box-shadow: 0 0 20px rgba(80, 163, 162, 0.7); }
+        }
+
+        .loader {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 20, 40, 0.98);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .loading-core {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #50a3a2, transparent);
+            border-radius: 50%;
+            animation: corePulse 1.8s infinite;
+            position: relative;
+        }
+
+        .loading-core::before,
+        .loading-core::after {
+            content: '';
+            position: absolute;
+            border: 6px solid rgba(80, 163, 162, 0.6);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit 2.5s infinite ease-in-out;
+        }
+
+        .loading-core::after {
+            animation-direction: reverse;
+            border-color: rgba(136, 216, 215, 0.6);
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 8px;
+            background: rgba(30, 30, 47, 0.9);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .loading-progress::before {
+            content: '';
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #50a3a2, #88d8d7);
+            animation: progressFill 3s infinite ease-in-out;
+        }
+
+        .loading-text {
+            color: #ffffff;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            animation: textHolo 2s infinite;
+            text-shadow: 0 0 15px rgba(80, 163, 162, 1);
+        }
+
+        @keyframes corePulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.1); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+        }
+
+        @keyframes progressFill {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        @keyframes textHolo {
+            0%, 100% { text-shadow: 0 0 15px rgba(80, 163, 162, 0.7); }
+            50% { text-shadow: 0 0 30px rgba(80, 163, 162, 1); }
+        }
+
+        .login-container.loading .loader {
+            display: flex;
+        }
+
+        .login-container.loading .login-btn,
+        .login-container.loading .input-group {
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .login-btn .text {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Screen Shake on Submit */
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid">
+        <div class="grid-lines"></div>
+    </div>
+    <div class="wave-overlay"></div>
+    <div class="particles" id="particles"></div>
+    <div class="login-container" id="loginContainer">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="text" id="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
+            <button type="submit" class="login-btn">
+                <span class="text">Login</span>
+            </button>
+        </form>
+        <div class="loader">
+            <div class="loading-core"></div>
+            <div class="loading-progress"></div>
+            <span class="loading-text">Authenticating...</span>
+        </div>
+    </div>
+
+    <script>
+        // Reactive Particle Effect
+        const particlesContainer = document.getElementById('particles');
+        function createParticle(x, y, isMouse = false) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = isMouse ? Math.random() * 15 + 10 : Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = isMouse ? `${x}px` : `${Math.random() * 100}%`;
+            particle.style.top = isMouse ? `${y}px` : '100%';
+            particle.style.animationDuration = isMouse ? `${Math.random() * 5 + 5}s` : `${Math.random() * 6 + 8}s`;
+            particlesContainer.appendChild(particle);
+            setTimeout(() => particle.remove(), isMouse ? 10000 : 15000);
+        }
+
+        setInterval(() => createParticle(), 200);
+
+        // Mouse-reactive particles
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.8) {
+                createParticle(e.clientX, e.clientY, true);
+            }
+        });
+
+        // Parallax and Tilt Effect
+        const loginContainer = document.getElementById('loginContainer');
+        loginContainer.addEventListener('mousemove', (e) => {
+            const rect = loginContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const tiltX = (y / rect.height) * 15;
+            const tiltY = -(x / rect.width) * 15;
+            loginContainer.style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        });
+
+        loginContainer.addEventListener('mouseleave', () => {
+            loginContainer.style.transform = 'perspective(1200px) rotateX(0) rotateY(0)';
+        });
+
+        // Sound Effects
+        function playSound(type) {
+            const audio = new Audio();
+            audio.volume = 0.4;
+            if (type === 'hover') {
+                audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA='; // Placeholder
+            } else if (type === 'click') {
+                audio.src = 'data:audio/wav;base64,UklGRisAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA='; // Placeholder
+            } else if (type === 'submit') {
+                audio.src = 'data:audio/wav;base64,UklGRiwAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA='; // Placeholder
+            }
+            audio.play();
+        }
+
+        document.querySelectorAll('.login-btn, input').forEach(el => {
+            el.addEventListener('mouseenter', () => playSound('hover'));
+            el.addEventListener('click', () => playSound('click'));
+        });
+
+        // Form Submission
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginContainer.classList.add('loading', 'shake');
+            playSound('submit');
+            
+            // Simulate login process
+            setTimeout(() => {
+                loginContainer.classList.remove('loading', 'shake');
+                alert('Login successful!'); // Replace with actual login logic
+                form.reset();
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
